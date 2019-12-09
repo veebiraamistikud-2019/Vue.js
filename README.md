@@ -1,2 +1,7 @@
-# Vue.js
-https://vuejs.org
+# Vue Todo
+--------------
+npm install
+--------------
+npm run serve
+--------------
+
