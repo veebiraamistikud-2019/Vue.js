@@ -1,0 +1,65 @@
+<div id="app" style="background-color:powderblue;">
+    <ul>
+        <li v-for="product in products">
+        {{product.quantity}} {{product.name}}
+        <span v-if="product.quantity==0">
+            OUT OF STOCK
+        </span>
+        <button @click="product.quantity +=1">add</button>
+        <button @click="product.quantity -=1">delete</button>
+    </li>
+    </ul>
+    <h2>total inventory : {{totalProducts}}</h2>
+    <br>
+    
+    <center>
+    <h1>Fuel Consumption Calculator</h1>
+	 
+	
+	<p>Distance Driven (km):<br><input id="distance" type="number" min="1" max="1000000" onchange="computeConsumption()"></p>
+	<p>Fuel l/100:<br><input  id="fuel" type="number" min="1" max="10000000" step="1"  onchange="computeConsumption()" onchange="clicked">
+	 </p>
+	<p>Cost per Unit of Fuel: € <br><input id="costper" type="number" min="0.5" max="10" step="0.01" value="1.38" onchange="computeConsumption()"><br>
+	<a href="https://teadmiseks.ee/kasulikku/kutusehinnad/" target="_blank">Fuel prices now</a>
+	<p>people in car:<br><input id="people" type="number" min="1" max="100" step="1" onchange="computeConsumption()"></p>
+	<h2 id="consumption"></h2>
+    </center>
+</div>
+
+<script src="./vue.js"></script>
+<script>
+    function computeConsumption (){
+		var distance = document.getElementById('distance').value;
+		var fuel = document.getElementById('fuel').value;
+		var costper = document.getElementById('costper').value;
+		var people = document.getElementById('people').value;
+		var consumed =  (fuel * (distance/100)).toFixed(2);
+		var costper100 = (consumed * costper).toFixed(2);
+		var passangers = (costper100/people).toFixed(2);
+		var totalFuel = ((distance/100)*fuel).toFixed(2);
+		document.getElementById('consumption').innerHTML = "Fuel consumed: " + totalFuel +" Liters"+ "<br>" + ( costper100 )+ " Euros  <br><br>   Total Fuel cost including people = " + (costper100/people).toFixed(2)+ " Euros";
+	}
+
+</script>
+
+<script>
+    const app=new Vue({
+        el: '#app',
+        data: {
+            products: [
+            {"id":1,"quantity":0,"name":"Piston"},
+            {"id":2,"quantity":1,"name":"Cylinder"},
+            {"id":3,"quantity":0,"name":"Gears"},
+            {"id":4,"quantity":3,"name":"Springs"},
+            {"id":5,"quantity":1,"name":"Gearboxes"}
+             ]
+        },
+        computed:{
+            totalProducts(){
+                return this.products.reduce((sum, product) => {
+                    return sum + product.quantity
+                }, 0)
+            }
+        }
+    })
+</script>
